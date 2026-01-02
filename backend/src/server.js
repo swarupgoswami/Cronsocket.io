@@ -1,5 +1,6 @@
 import express from "express";
 import {ENV} from "./lib/env.js";
+import { connectDB } from "./lib/db.js";
 
 
 
@@ -12,4 +13,6 @@ app.get('/',(req,res)=>{
 });
 
 
-app.listen(ENV.PORT,()=>{console.log("server is running on localhost3000")});
+app.listen(ENV.PORT,()=>{console.log("server is running on localhost3000");
+    connectDB();
+});
