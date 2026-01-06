@@ -14,10 +14,11 @@ const userSchema=new mongoose.Schema({
         type:String,
         default:"",
     },
-    ClerkId:{
+    clerkId:{
         type:String,
         required:true,
         unique:true,
+        sparse: true,
 
     },
 
