@@ -69,7 +69,13 @@ const deleteUsersFromDb = inngest.createFunction(
 
     //    destructuring the the entire event body incoming from clerk webhook
     const { id } = event.data;
+    if (!id) {
+      console.error("❌ Clerk user id missing on delete");
+      return;
+    }
     await User.deleteOne({ clerkId: id });
+
+    console.log("user deleted from database:", id);
 
   }
 );
