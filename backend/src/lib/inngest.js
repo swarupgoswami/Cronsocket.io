@@ -59,6 +59,8 @@ const syncUsers = inngest.createFunction(
   }
 );
 
+
+// function that wil delete user from the database when clerk user is deleted 
 const deleteUsersFromDb = inngest.createFunction(
   { id: "delete-user-from-db" },
   { event: "clerk.user.deleted" },
