@@ -2,6 +2,7 @@ import { Inngest } from "inngest";
 import { connectDB } from "./db.js";
 import User from "../models/User.js";
 import { ENV } from "./env.js";
+import { deleteStreamUser, upsertStreamUser } from "./stream.js";
 
 export const inngest = new Inngest({
   id: "cronsocket-io",
@@ -15,21 +16,6 @@ const syncUsers = inngest.createFunction(
     await connectDB();
 
     // //    destructuring the the entire event body incoming from clerk webhook
-    // const { id, email_addresses, first_name, last_name, image_url } =
-    //   event.data;
-
-    // console.log("CLERK EVENT RECEIVED", event.data.id);
-
-
-    // const newUser = {
-    //   clerkId: id,
-    //   email: email_addresses[0]?.email_address,
-    //   name: `${first_name || ""} ${last_name || ""}`,
-    //   profileImage: image_url,
-    // };
-
-    // // saving the user to the database
-    // await User.create(newUser);
 
     const {
       id,
@@ -56,6 +42,15 @@ const syncUsers = inngest.createFunction(
     );
 
     console.log("✅ User synced:", id);
+
+
+
+    await upsertStreamUser({
+      id: id.toString(),
+      name: `${first_name ?? ""} ${last_name ?? ""}`,
+      image: image_url,
+
+    })
   }
 );
 
@@ -76,6 +71,8 @@ const deleteUsersFromDb = inngest.createFunction(
     await User.deleteOne({ clerkId: id });
 
     console.log("user deleted from database:", id);
+
+    await deleteStreamUser(id.toString());
 
   }
 );
