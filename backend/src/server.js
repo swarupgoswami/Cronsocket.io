@@ -9,7 +9,7 @@ import clerkWebhook from "./routes/clerkWebhook.js";
 import { clerkMiddleware } from '@clerk/express'
 import { protectroute } from "./middlewares/protectRoute.js";
 import chatRoutes from "./routes/chatRoutes.js";
-
+import sessionRoutes from "./routes/sessionRoutes.js";
 
 
 
@@ -33,6 +33,7 @@ app.use(
   })
 );
 app.use("/api/chat",chatRoutes);
+app.use('/api/sessions',sessionRoutes);
 
 
 
