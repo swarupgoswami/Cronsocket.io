@@ -169,8 +169,7 @@ export async function endSession(req,res){
             return res.status(400).json({message:"session already completed"});
         }
 
-        session.status="completed";
-        await session.save();
+        
 
         const call= streamClient.video.call('default',session.callId);
         await call.delete({hard:true});
