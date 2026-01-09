@@ -9,7 +9,7 @@ export async function createSession(req,res){
         const clerkId=req.user.clerkId;
 
         if(!problem || !difficulty){
-            return res.status(400).json({messgae:"problem and difficulty are required"});
+            return res.status(400).json({message:"problem and difficulty are required"});
         };
 
 
@@ -73,7 +73,7 @@ export async function getMyRecentSessions(req,res){
 
         const sessions=await Session.find({
             status:"completed",
-            $or:[{host:userId},{participants:userId}],
+            $or:[{host:userId},{participant:userId}],
         })
         .sort({createdAt:-1})
         .limit(20)
@@ -92,15 +92,15 @@ export async function getSessionById(req,res){
 
         const {id}=req.params;
 
-        const sessions=await findById(id)
+        const session=await Session.findById(id)
         .populate("host","name profileImage email clerkId")
-        .populate("participants","name profileImage email clerkId");
+        .populate("participant","name profileImage email clerkId");
 
-        if(!sessions){
+        if(!session){
             return res.status(404).json({message:"session not found"});
         }
 
-        res.status(200).json({sessions});
+        res.status(200).json({session});
         
     } catch (error) {
         console.error("error fetching session by id", error);
@@ -129,7 +129,7 @@ export async function joinSession(req,res){
             return res.status(400).json({message:"host cannot join the session as participant"});
         }
 
-        if(session.participants){
+        if(session.participant){
             return res.status(409).json({message:"user already joined the session"});
         }
         
