@@ -17,6 +17,7 @@ const ProblemsPage = () => {
   const hardProblemsCount = problems.filter(
     (p) => p.difficulty === "Hard"
   ).length;
+  
 
   return (
     <div className="min-h-screen bg-base-200">
