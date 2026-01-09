@@ -1,6 +1,5 @@
-import { Session } from "@clerk/express";
 import Session from "../models/Session.js";
-import { chatClient, streamClient } from "../lib/stream";
+import { chatClient, streamClient } from "../lib/stream.js";
 
 export async function createSession(req,res){
     try {
@@ -19,12 +18,12 @@ export async function createSession(req,res){
         // create session in databse
         const session=await Session.create({problem,difficulty,host:userId,callId});
 
-        await streamClient.video.call('default',callId,getOrCreate({
+        await streamClient.video.call('default',callId).getOrCreate({
             data:{
                 created_by_id:clerkId,
                 custom:{problem,difficulty,sessionId:session._id.toString()},
             },
-        }));
+        });
 
 
         const channel=chatClient.channel('messaging',callId,{
