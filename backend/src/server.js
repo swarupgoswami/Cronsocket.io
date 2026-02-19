@@ -10,6 +10,8 @@ import { clerkMiddleware } from '@clerk/express'
 import { protectroute } from "./middlewares/protectRoute.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import sessionRoutes from "./routes/sessionRoutes.js";
+import executeRoute from "./routes/executeRoute.js";
+
 
 
 
@@ -34,6 +36,8 @@ app.use(
 );
 app.use("/api/chat",chatRoutes);
 app.use('/api/sessions',sessionRoutes);
+app.use("/api/execute", executeRoute);
+
 
 
 
